@@ -12,29 +12,12 @@
         private $template = "defaultTemplate";
         public $Auth;
         
-        private static $uses = array();
-        
         public function __construct($title)
         {
             $this->title = $title;
             $this->access_level = "admin"; //set as admin by default, better to be too safe
             $this->force_ssl = false;
             $this->Auth = new Authenticator();
-            
-            $locator = new ResourceLocator();
-            
-            //include all needed files
-            foreach(self::$uses as $file)
-            {
-                set_error_handler(function($errno, $errstr, $errfile, $errline, $errcontext)
-                {
-                    global $file;
-                    echo "Problem including file: " . $file . ": [" . $errno . "] " . $errstr . ", in: " . $errfile . "[" . $errline . "]";
-                    exit();
-                });
-                include_once $locator->find($file);
-                restore_error_handler();
-            }
             
         }
         

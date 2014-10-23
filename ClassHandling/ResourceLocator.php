@@ -64,5 +64,11 @@
             if($type == "other")
                 return $_SERVER['DOCUMENT_ROOT'] . "/core/Other/" . $resource . ".php";
         }
+        
+        public function inc($file, $type = null)
+        {
+            $locator = $this;
+            include_once $this->find($file, $type);
+        }
     }
 ?>

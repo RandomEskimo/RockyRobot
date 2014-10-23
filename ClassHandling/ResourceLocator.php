@@ -68,7 +68,14 @@
         public function inc($file, $type = null)
         {
             $locator = $this;
+            set_error_handler(function()
+            {
+                global $file;
+                echo "Unable to include file: \"" . $file . "\"";
+                exit();
+            });
             include_once $this->find($file, $type);
+            restore_error_handler();
         }
     }
 ?>

@@ -30,7 +30,7 @@
         
         public function authenticate($password, $stored_password, $salt = null)
         {
-            $hashed_password = generatePasswordHash($password, $salt);
+            $hashed_password = $this->generatePasswordHash($password, $salt);
 
             //test if the hashed test password is the same as the stored password
             if($hashed_password == $stored_password)

@@ -1,5 +1,4 @@
 <?php
-    include_once $locator->find("Snippet");
 
     class PageButtonsSnippet extends Snippet
     {

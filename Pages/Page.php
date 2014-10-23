@@ -1,6 +1,6 @@
 <?
 
-    include_once $locator->find("Snippet");
+    $locator->inc("Snippet");
     
     class Page
     {
@@ -82,11 +82,6 @@
         public function setTemplate($template)
         {
             $this->template = $template;
-        }
-        
-        public static function inc($file)
-        {
-            self::$uses[] = $file;
         }
     }
 ?>

@@ -1,0 +1,32 @@
+DivSnippet
+    ($id, $class)
+
+FormSnippet
+    ($method, $action)
+    setBinary($binary)
+
+ImageSnippet
+    (image, width, height)
+    setAlt(text)
+
+InputSnippet
+    (name, value, type)
+    
+LinkSnippet
+    (Snippet $sub, $link)
+    
+TableSnippet
+    addSnippet(Snippet)
+    addRow()
+    addEmptyCell()
+    
+TextAreaSnippet
+    (name, value, rows, columns)
+    
+TextSnippet
+    (text)
+    setDontFilter(bool)
+    setText(String)
+    getText()
+    
+    

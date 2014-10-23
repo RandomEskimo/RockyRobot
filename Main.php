@@ -104,10 +104,34 @@ if(DEBUG)
 }
 
 //if result is a page, pass it to the page renderer
-if($result != null)
+if($result != null || is_array($result))
 {
+    //see if the conection is https
+    $is_https = false;
+    if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
+        $is_https = true;
+    
+    //see if the result is a redirect request
+    if(is_array($result))
+    {
+        $new_url = "";
+        if($is_https)
+            $new_url = "https://";
+        else
+            $new_url = "http://";
+        $new_url .= $_SERVER['HTTP_HOST'] . '/';
+        if(isset($result['controller']))
+            $new_url .= $result['controller'];
+        else if(isset($result['function']))
+            $new_url .= $controller;
+        if(isset($result['function']))
+            $new_url .= '/' . $result['function'];
+        
+        header('Location: ' . $new_url);
+        exit();
+    }
     //check if the page should be https
-    if((!isset($_SERVER['HTTPS']) || !$_SERVER['HTTPS'] == 'on') && USING_SSL)
+    if(!$is_https && USING_SSL)
     {
         if($auth->isLoggedIn() || $result->isForceSSL())
         {

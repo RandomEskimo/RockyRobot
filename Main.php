@@ -93,6 +93,7 @@ if(DEBUG)
     $debug_args .= ")";
     $debug = new TextSnippet('
         <div class="debug" style="color:black;background-color:white;">
+            <h3>Debug Info</h3>
             Controller: ' . $controller . '<br/>
             Function: ' . $function . '<br/>
             Args: <pre>' . $debug_args . '</pre>

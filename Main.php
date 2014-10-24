@@ -96,8 +96,7 @@ if(DEBUG)
         $debug_args .= "\t" . $arg . "\n";
     $debug_args .= ")";
     DebugSnippet::addInfo('url info',
-            '<h3>Debug Info</h3>
-            Controller: ' . $controller . '<br/>
+            'Controller: ' . $controller . '<br/>
             Function: ' . $function . '<br/>
             Args: <pre>' . $debug_args . '</pre>
             Uri: ' . $uri . '<br/>'
@@ -135,6 +134,10 @@ if($result != null || is_array($result))
                     $new_url .= '/' . $arg;
             }
         }
+        if(isset($result['flash']))
+        {
+            $_SESSION['flash_message'] = $flash;//this will be picked up by the next Page to be displayed
+        }                                       //where it can then be displayed to the user
         
         header('Location: ' . $new_url);
         exit();

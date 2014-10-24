@@ -1,6 +1,7 @@
 <?
 
     $locator->inc("Snippet");
+    $locator->inc("TextSnippet");
     
     class Page
     {
@@ -18,7 +19,11 @@
             $this->access_level = "admin"; //set as admin by default, better to be too safe
             $this->force_ssl = false;
             $this->Auth = new Authenticator();
-            
+            if(isset($_SESSION['flash_message']))
+            {
+                $this->components['flash'] = new TextSnippet($_SESSION['flash_message']);
+                unset($_SESSION['flash_message']);
+            }
         }
         
         public function setTitle($title)

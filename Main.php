@@ -3,12 +3,12 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . "/core/ClassHandling/ResourceLocator.php";
 $locator = new ResourceLocator();
 include_once $_SERVER['DOCUMENT_ROOT'] . "/core/Render/Renderer.php";
-include_once $locator->find("GlobalFunctions", "other");
-include_once $locator->find("AbstractController");
-include_once $locator->find("AbstractAuthenticator");
-include_once $locator->find("Page");
-include_once $locator->find("Snippet");
-include_once $locator->find("TextSnippet");
+$locator->inc("GlobalFunctions", "other");
+$locator->inc("AbstractController");
+$locator->inc("AbstractAuthenticator");
+$locator->inc("Page");
+$locator->inc("Snippet");
+$locator->inc("TextSnippet");
 
 //nclude user thingser
 //set an error handler for finding user defined classes
@@ -42,6 +42,7 @@ $parts = explode("?", $uri);
 $uri = $parts[0];
 
 $controller = "index";
+$raw_controller;
 $function   = "index";
 $args       = array();
 
@@ -56,6 +57,9 @@ if(count($parts) != 0 && $parts[0] != "")
     if(count($parts) > 2 && $parts[2] != "")
         $args = array_slice($parts, 2);
 }
+
+//save the raw controller as it may be needed by the redirect engine
+$raw_controller = $controller;
 
 //find the controller
 $controller = makeControllerName($controller);

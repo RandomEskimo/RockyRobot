@@ -9,7 +9,7 @@ class Renderer
     
     private $components = array();
     
-    function gen(Page $page, $debug = null)
+    function gen(Page $page)
     {
         //do some setup
         $this->page = $page;
@@ -17,9 +17,9 @@ class Renderer
         $this->components = $page->getComponents();
         $this->components['title'] = new TextSnippet(APP_NAME . ' ~ ' . $page->getTitle());
         $this->components['content'] = $page;
-        if($debug != null)
+        if(DEBUG)
         {
-            $this->components['debug'] = $debug;
+            $this->components['debug'] = new DebugSnippet();
         }
         
         $locator = new ResourceLocator();
@@ -47,31 +47,5 @@ class Renderer
             //echo $component;
         }
     }
-    
-    /*function header()
-    {
-        //include $_SERVER['DOCUMENT_ROOT'] . '/templates/header.php';
-        (new Header())->genContent();
-    }
-    
-    function navbar()
-    {
-        (new NavBar())->genContent();
-    }
-    
-    function title()
-    {
-        echo $this->title;
-    }
-    
-    function content()
-    {
-        $this->page->genContent();
-    }
-    
-    function footer()
-    {
-        (new Footer())->genContent();
-    }*/
 }
 ?>

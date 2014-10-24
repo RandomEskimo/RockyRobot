@@ -8,6 +8,7 @@ $locator->inc("AbstractController");
 $locator->inc("AbstractAuthenticator");
 $locator->inc("Page");
 $locator->inc("Snippet");
+$locator->inc("DebugSnippet");
 $locator->inc("TextSnippet");
 
 //nclude user thingser
@@ -87,7 +88,6 @@ $cont->Auth = $auth;
 
 $result = eval('return $cont->' . $function . '($args);');
 
-$debug = null;
 if(DEBUG)
 {
     //generate some debug info
@@ -95,16 +95,14 @@ if(DEBUG)
     foreach($args as $arg)
         $debug_args .= "\t" . $arg . "\n";
     $debug_args .= ")";
-    $debug = new TextSnippet('
-        <div class="debug" style="color:black;background-color:white;">
-            <h3>Debug Info</h3>
+    DebugSnippet::addInfo('url info',
+            '<h3>Debug Info</h3>
             Controller: ' . $controller . '<br/>
             Function: ' . $function . '<br/>
             Args: <pre>' . $debug_args . '</pre>
-            Uri: ' . $uri . '<br/>
-        </div>'
+            Uri: ' . $uri . '<br/>'
     );
-    $debug->setDontFilter(true);
+    DebugSnippet::addInfo('result', $result);
 }
 
 //if result is a page, pass it to the page renderer
@@ -127,9 +125,16 @@ if($result != null || is_array($result))
         if(isset($result['controller']))
             $new_url .= $result['controller'];
         else if(isset($result['function']))
-            $new_url .= $controller;
+            $new_url .= $raw_controller;
         if(isset($result['function']))
+        {
             $new_url .= '/' . $result['function'];
+            if(isset($result['args']))
+            {
+                foreach($result['args'] as $arg)
+                    $new_url .= '/' . $arg;
+            }
+        }
         
         header('Location: ' . $new_url);
         exit();
@@ -145,7 +150,7 @@ if($result != null || is_array($result))
         }
     }
     $ren = new Renderer();
-    $ren->gen($result, $debug);
+    $ren->gen($result);
 }
 
 //helper functions

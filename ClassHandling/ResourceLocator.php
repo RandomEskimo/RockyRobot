@@ -5,7 +5,7 @@
             'DropMenuSnippet', 'FormSnippet', 'HeadingSnippet',
             'ImageSnippet', 'InputSnippet', 'LinkSnippet', 
             'PageButtonsSnippet', 'TableSnippet', 'TextAreaSnippet',
-            'TextSnippet', 'Snippet'
+            'TextSnippet', 'Snippet', 'DebugSnippet'
         );
         
         private $corePages = array('Page');

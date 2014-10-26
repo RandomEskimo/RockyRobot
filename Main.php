@@ -102,6 +102,9 @@ if(DEBUG)
             Uri: ' . $uri . '<br/>'
     );
     DebugSnippet::addInfo('result', $result);
+    DebugSnippet::addInfo('GET', $_GET);
+    DebugSnippet::addInfo('POST', $_POST);
+    DebugSnippet::addInfo('SESSION', $_SESSION);
 }
 
 //if result is a page, pass it to the page renderer
@@ -114,29 +117,36 @@ if($result != null || is_array($result))
     
     //see if the result is a redirect request
     if(is_array($result))
-    {
+    {  
         $new_url = "";
-        if($is_https)
-            $new_url = "https://";
-        else
-            $new_url = "http://";
-        $new_url .= $_SERVER['HTTP_HOST'] . '/';
-        if(isset($result['controller']))
-            $new_url .= $result['controller'];
-        else if(isset($result['function']))
-            $new_url .= $raw_controller;
-        if(isset($result['function']))
+        if(isset($result['url']))
         {
-            $new_url .= '/' . $result['function'];
-            if(isset($result['args']))
+            $new_url = $result['url'];
+        }
+        else
+        {
+            if($is_https)
+                $new_url = "https://";
+            else
+                $new_url = "http://";
+            $new_url .= $_SERVER['HTTP_HOST'] . '/';
+            if(isset($result['controller']))
+                $new_url .= $result['controller'];
+            else if(isset($result['function']))
+                $new_url .= $raw_controller;
+            if(isset($result['function']))
             {
-                foreach($result['args'] as $arg)
-                    $new_url .= '/' . $arg;
+                $new_url .= '/' . $result['function'];
+                if(isset($result['args']))
+                {
+                    foreach($result['args'] as $arg)
+                        $new_url .= '/' . $arg;
+                }
             }
         }
         if(isset($result['flash']))
         {
-            $_SESSION['flash_message'] = $flash;//this will be picked up by the next Page to be displayed
+            $_SESSION['flash_message'] = $result['flash'];//this will be picked up by the next Page to be displayed
         }                                       //where it can then be displayed to the user
         
         header('Location: ' . $new_url);

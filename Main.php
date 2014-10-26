@@ -11,6 +11,8 @@ $locator->inc("Snippet");
 $locator->inc("DebugSnippet");
 $locator->inc("TextSnippet");
 
+$__VERSION__ = '0.1alpha';
+
 //nclude user thingser
 //set an error handler for finding user defined classes
 set_error_handler(function()
@@ -95,6 +97,7 @@ if(DEBUG)
     foreach($args as $arg)
         $debug_args .= "\t" . $arg . "\n";
     $debug_args .= ")";
+    DebugSnippet::addInfo('RockyRobot version', $__VERSION__);
     DebugSnippet::addInfo('url info',
             'Controller: ' . $controller . '<br/>
             Function: ' . $function . '<br/>

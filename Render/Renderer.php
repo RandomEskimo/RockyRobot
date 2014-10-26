@@ -11,12 +11,14 @@ class Renderer
     
     function gen(Page $page)
     {
+        global $__VERSION__;
         //do some setup
         $this->page = $page;
         
         $this->components = $page->getComponents();
         $this->components['title'] = new TextSnippet(APP_NAME . ' ~ ' . $page->getTitle());
         $this->components['content'] = $page;
+        $this->components['rrversion'] = new TextSnippet($__VERSION__);
         if(DEBUG)
         {
             $this->components['debug'] = new DebugSnippet();
@@ -34,7 +36,7 @@ class Renderer
             exit();
         });
         include $template;
-        //restore_error_handler();
+        restore_error_handler();
         
     }
     

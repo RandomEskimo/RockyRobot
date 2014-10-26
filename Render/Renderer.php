@@ -1,24 +1,21 @@
 <?php
 
-include_once $locator->find("TextSnippet");
-include_once $locator->find("Snippet");
+$locator->inc("TextSnippet");
+$locator->inc("Snippet");
 
 class Renderer
 {
-    public $page;
     
     private $components = array();
     
     function gen(Page $page)
     {
-        global $__VERSION__;
         //do some setup
-        $this->page = $page;
         
         $this->components = $page->getComponents();
         $this->components['title'] = new TextSnippet(APP_NAME . ' ~ ' . $page->getTitle());
         $this->components['content'] = $page;
-        $this->components['rrversion'] = new TextSnippet($__VERSION__);
+        $this->components['rrversion'] = new TextSnippet(__VERSION__);
         if(DEBUG)
         {
             $this->components['debug'] = new DebugSnippet();

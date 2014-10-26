@@ -5,7 +5,7 @@
             'DropMenuSnippet', 'FormSnippet', 'HeadingSnippet',
             'ImageSnippet', 'InputSnippet', 'LinkSnippet', 
             'PageButtonsSnippet', 'TableSnippet', 'TextAreaSnippet',
-            'TextSnippet', 'Snippet', 'DebugSnippet'
+            'TextSnippet', 'Snippet', 'DebugSnippet', 'FlashSnippet'
         );
         
         private $corePages = array('Page');
@@ -68,10 +68,11 @@
         public function inc($file, $type = null)
         {
             $locator = $this;
+            $resource = $file;
             set_error_handler(function()
             {
-                global $file;
-                echo "Unable to include file: \"" . $file . "\"";
+                global $resource;
+                echo "Error including file: \"" . $resource . "\"";
                 exit();
             });
             include_once $this->find($file, $type);

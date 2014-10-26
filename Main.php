@@ -11,7 +11,7 @@ $locator->inc("Snippet");
 $locator->inc("DebugSnippet");
 $locator->inc("TextSnippet");
 
-$__VERSION__ = '0.1alpha';
+define('__VERSION__', '0.1alpha');
 
 //nclude user thingser
 //set an error handler for finding user defined classes
@@ -85,7 +85,7 @@ if(!method_exists($cont, $function))
     return;
 }
 
-//add any objects need by the controller
+//add any objects needed by the controller
 $cont->Auth = $auth;
 
 $result = eval('return $cont->' . $function . '($args);');
@@ -97,7 +97,7 @@ if(DEBUG)
     foreach($args as $arg)
         $debug_args .= "\t" . $arg . "\n";
     $debug_args .= ")";
-    DebugSnippet::addInfo('RockyRobot version', $__VERSION__);
+    DebugSnippet::addInfo('RockyRobot version', __VERSION__);
     DebugSnippet::addInfo('url info',
             'Controller: ' . $controller . '<br/>
             Function: ' . $function . '<br/>
@@ -150,7 +150,7 @@ if($result != null || is_array($result))
         if(isset($result['flash']))
         {
             $_SESSION['flash_message'] = $result['flash'];//this will be picked up by the next Page to be displayed
-        }                                       //where it can then be displayed to the user
+        }                                                 //where it can then be displayed to the user
         
         header('Location: ' . $new_url);
         exit();

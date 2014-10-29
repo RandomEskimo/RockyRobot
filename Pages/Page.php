@@ -1,7 +1,7 @@
 <?
 
     $locator->inc("Snippet");
-    $locator->inc("TextSnippet");
+    $locator->inc("FlashSnippet");
     
     class Page
     {
@@ -19,10 +19,10 @@
             $this->access_level = "admin"; //set as admin by default, better to be too safe
             $this->force_ssl = false;
             $this->Auth = new Authenticator();
-            if(isset($_SESSION['flash_message']))
+            if(isset($_SESSION['flash_message']) && $_SESSION['flash_message'] != null)
             {
-                $this->components['flash'] = new TextSnippet($_SESSION['flash_message']);
-                unset($_SESSION['flash_message']);
+                $this->components['flash'] = new FlashSnippet($_SESSION['flash_message']);
+                $_SESSION['flash_message'] = null;
             }
         }
         
@@ -87,6 +87,11 @@
         public function setTemplate($template)
         {
             $this->template = $template;
+        }
+        
+        public function setFlashMessage($message)
+        {
+            $this->components['flash'] = new FLashSnippet($message);
         }
     }
 ?>

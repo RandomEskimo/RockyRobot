@@ -59,6 +59,9 @@
                 //Models
                 if(preg_match("/.*Model$/", $resource))
                     return $_SERVER['DOCUMENT_ROOT'] . "/Models/" . $resource . ".php";
+                //request handler
+                if($resource == 'RequestHandler')
+                    return $_SERVER['DOCUMENT_ROOT'] . "/Request/" . $resource . ".php";
             }
             //others
             if($type == "other")

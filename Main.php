@@ -11,6 +11,9 @@ $locator->inc("Snippet");
 $locator->inc("DebugSnippet");
 $locator->inc("TextSnippet");
 
+$file; //global for error reporting of included files
+
+//this is the current version
 define('__VERSION__', '0.1alpha');
 
 //nclude user thingser

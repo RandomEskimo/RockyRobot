@@ -23,16 +23,18 @@ class Renderer
         
         $locator = new ResourceLocator();
         
-        $template = $locator->find($page->getTemplate());
+        $file = $locator->find($page->getTemplate());
         
         //include the template
-        set_error_handler(function()
+        set_error_handler(function($errno, $errstr, $errfile, $errline)
         {
-            global $template;
-            echo "Unable to find template file: \"" . $template . "\"";
+            global $file;
+            echo "<h2>Render errro</h2>Error including file: \"" . $file . "\"<br/>";
+            echo "[" . $errno . "]: " . $errstr . ". in: " . $errfile . "[" . $errline . "]<br/>";
+            //no need to exit
             exit();
         });
-        include $template;
+        include $file;
         restore_error_handler();
         
     }

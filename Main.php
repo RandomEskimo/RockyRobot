@@ -10,13 +10,14 @@ $locator->inc("Page");
 $locator->inc("Snippet");
 $locator->inc("DebugSnippet");
 $locator->inc("TextSnippet");
+$locator->inc("RequestHandler");
 
 $file; //global for error reporting of included files
 
 //this is the current version
 define('__VERSION__', '0.1alpha');
 
-//nclude user thingser
+//nclude user things
 //set an error handler for finding user defined classes
 set_error_handler(function()
 {
@@ -24,8 +25,9 @@ set_error_handler(function()
     echo "Unable to find Authenticator please make it at: " . $locator->find("Authenticator");
     exit();
 });
-restore_error_handler();
 include_once $locator->find("Authenticator");
+restore_error_handler();
+
 set_error_handler(function()
 {
     global $locator;
@@ -47,63 +49,20 @@ $uri = $_SERVER['REQUEST_URI'];
 $parts = explode("?", $uri);
 $uri = $parts[0];
 
-$controller = "index";
-$raw_controller;
-$function   = "index";
-$args       = array();
-
-//break up the request into parts
-$parts = explode("/", $uri);
-$parts = array_slice($parts, 1);
-if(count($parts) != 0 && $parts[0] != "")
-{
-    $controller = $parts[0];
-    if(count($parts) > 1 && $parts[1] != "")
-        $function = $parts[1];
-    if(count($parts) > 2 && $parts[2] != "")
-        $args = array_slice($parts, 2);
-}
-
-//save the raw controller as it may be needed by the redirect engine
-$raw_controller = $controller;
-
-//find the controller
-$controller = makeControllerName($controller);
-set_error_handler(function()
-{
-    global $controller;
-    echo "Unable to find controller: \"" . $controller . "\"";
-    exit();
-});
-include_once $locator->find($controller);
-restore_error_handler();
-
-//instanciate the controller
-$cont = eval(" return new " . $controller . "();");
-
-//make sure it has the function
-if(!method_exists($cont, $function))
-{
-    echo "Controller: \"" . $controller . "\" has no function: " . $function . "()";
-    return;
-}
-
-//add any objects needed by the controller
-$cont->Auth = $auth;
-
-$result = eval('return $cont->' . $function . '($args);');
+$rh = new RequestHandler($uri);
+$result = $rh->handleRequest();
 
 if(DEBUG)
 {
     //generate some debug info
     $debug_args = "\narray\n(\n";
-    foreach($args as $arg)
+    foreach($rh->getArgs() as $arg)
         $debug_args .= "\t" . $arg . "\n";
     $debug_args .= ")";
     DebugSnippet::addInfo('RockyRobot version', __VERSION__);
     DebugSnippet::addInfo('url info',
-            'Controller: ' . $controller . '<br/>
-            Function: ' . $function . '<br/>
+            'Controller: ' . $rh->getController() . '<br/>
+            Function: ' . $rh->getFunction() . '<br/>
             Args: <pre>' . $debug_args . '</pre>
             Uri: ' . $uri . '<br/>'
     );
@@ -139,7 +98,7 @@ if($result != null || is_array($result))
             if(isset($result['controller']))
                 $new_url .= $result['controller'];
             else if(isset($result['function']))
-                $new_url .= $raw_controller;
+                $new_url .= $rh->getRawController();
             if(isset($result['function']))
             {
                 $new_url .= '/' . $result['function'];
@@ -170,17 +129,6 @@ if($result != null || is_array($result))
     }
     $ren = new Renderer();
     $ren->gen($result);
-}
-
-//helper functions
-
-function makeControllerName($name)
-{
-    $out = "";
-    $first = substr($name, 0, 1);
-    $out .= strtoupper($first);
-    $out .= substr($name, 1) . "Controller";
-    return $out;
 }
 
 ?>

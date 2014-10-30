@@ -10,6 +10,7 @@ class Renderer
     
     function gen(Page $page)
     {
+        global $file;
         //do some setup
         
         $this->components = $page->getComponents();
@@ -29,9 +30,11 @@ class Renderer
         set_error_handler(function($errno, $errstr, $errfile, $errline)
         {
             global $file;
-            echo "<h2>Render errro</h2>Error including file: \"" . $file . "\"<br/>";
-            echo "[" . $errno . "]: " . $errstr . ". in: " . $errfile . "[" . $errline . "]<br/>";
-            //no need to exit
+            if(DEBUG)
+            {
+                echo "<h2>Render error</h2>Error including file: \"" . $file . "\"<br/>";
+                echo "[" . $errno . "]: " . $errstr . ". in: " . $errfile . "[" . $errline . "]<br/>";
+            }
             exit();
         });
         include $file;
@@ -41,12 +44,22 @@ class Renderer
     
     function get($component)
     {
-        //
+        global $file;
+        $file = $component;
+        set_error_handler(function($errno, $errstr, $errfile, $errlin)
+        {
+            global $file;
+            if(DEBUG)
+            {
+                echo "<h2>Render::get() error</h2>Error when finding component: \"" . $file . "\"<br/>";
+                echo "[" . $errno . "]: " . $errstr . ". in: " . $errfile . "[" . $errline . "]<br/>";
+            }
+        });
         if(array_key_exists($component, $this->components))
         {
             $this->components[$component]->genContent();
-            //echo $component;
         }
+        restore_error_handler();
     }
 }
 ?>

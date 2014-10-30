@@ -2,7 +2,6 @@
 
     class Snippet
     {
-    
         public function genContent()
         {
             

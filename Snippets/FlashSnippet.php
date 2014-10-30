@@ -1,7 +1,7 @@
 <?php
     class FlashSnippet extends Snippet
     {
-        preivate $content;
+        private $content;
         
         public function __construct($message)
         {
@@ -12,7 +12,7 @@
         {
             ?>
             <div id="flash">
-                <?php echo htmlentities($message); ?>
+                <p><?php echo htmlentities($this->message); ?></p>
             </div>
             <?php
         }

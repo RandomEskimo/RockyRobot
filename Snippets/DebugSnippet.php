@@ -11,13 +11,16 @@
         
         public function genContent()
         {
-            echo '<div class="debug" style="color:black;background-color:white;">';
-            foreach(self::$info as $item)
+            echo '<div class="debug" style="color:black;background-color:white;"><h3>Debug Info</h3>';
+            $keys = array_keys(self::$info);
+            foreach($keys as $key)
             {
+                $item = self::$info[$key];
+                echo '<h4>' . $key . '</h4>';
                 if(is_string($item))
                     echo $item;
                 else if(is_subclass_of($item, 'Snippet'))
-                    echo $item
+                    $item->genContent();
                 else
                 {
                     echo '<pre>';

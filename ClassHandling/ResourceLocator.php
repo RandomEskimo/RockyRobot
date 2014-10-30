@@ -61,24 +61,26 @@
                     return $_SERVER['DOCUMENT_ROOT'] . "/Models/" . $resource . ".php";
                 //request handler
                 if($resource == 'RequestHandler')
-                    return $_SERVER['DOCUMENT_ROOT'] . "/Request/" . $resource . ".php";
+                    return $_SERVER['DOCUMENT_ROOT'] . "/core/Request/" . $resource . ".php";
             }
             //others
             if($type == "other")
                 return $_SERVER['DOCUMENT_ROOT'] . "/core/Other/" . $resource . ".php";
         }
         
-        public function inc($file, $type = null)
+        public function inc($resource, $type = null)
         {
+            global $file;
             $locator = $this;
-            $resource = $file;
-            set_error_handler(function()
+            $file = $resource;
+            set_error_handler(function($errno, $errstr, $errfile, $errline)
             {
-                global $resource;
-                echo "Error including file: \"" . $resource . "\"";
+                global $file;
+                echo "Error including file: \"" . $file . "\"</br>";
+                echo "[" . $errno . "]: " . $errstr . ". in: " . $errfile . "[" . $errline . "]<br/>";
                 exit();
             });
-            include_once $this->find($file, $type);
+            include_once $this->find($resource, $type);
             restore_error_handler();
         }
     }

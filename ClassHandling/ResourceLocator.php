@@ -70,6 +70,31 @@
         
         public function inc($resource, $type = null)
         {
+            if(is_array($resource))
+            {
+                foreach($resource as $request)
+                {
+                    if(is_array($request))
+                    {
+                        if(isset($request['resource']))
+                        {
+                            $res = $request['resource'];
+                            $ty  = null;
+                            if(isset($request['type']))
+                                $ty = $request['type'];
+                            $this->inc_($res, $ty);
+                        }
+                    }
+                    else
+                        $this->inc_($request);
+                }
+            }
+            else
+                $this->inc_($resource, $type);
+        }
+        
+        private function inc_($resource, $type = null)
+        {
             global $file;
             $locator = $this;
             $file = $resource;

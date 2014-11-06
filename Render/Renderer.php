@@ -46,7 +46,7 @@ class Renderer
     {
         global $file;
         $file = $component;
-        set_error_handler(function($errno, $errstr, $errfile, $errlin)
+        set_error_handler(function($errno, $errstr, $errfile, $errline)
         {
             global $file;
             if(DEBUG)
@@ -60,6 +60,18 @@ class Renderer
             $this->components[$component]->genContent();
         }
         restore_error_handler();
+    }
+    
+    public static function renderError($errtext)
+    {
+        $err_cont = new ErrorController();
+        $page;
+        if(DEBUG)
+            $page = $err_cont->index($errtext);
+        else
+            $page = $err_cont->index("Internal Error");
+        $ren = new Renderer();
+        $ren->gen($page);
     }
 }
 ?>

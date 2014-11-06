@@ -101,8 +101,9 @@
             set_error_handler(function($errno, $errstr, $errfile, $errline)
             {
                 global $file;
-                echo "Error including file: \"" . $file . "\"</br>";
-                echo "[" . $errno . "]: " . $errstr . ". in: " . $errfile . "[" . $errline . "]<br/>";
+                $error = "Error including file: \"" . $file . "\"</br>" .
+                    "[" . $errno . "]: " . $errstr . ". in: " . $errfile . "[" . $errline . "]<br/>";
+                    Renderer::renderError($error);
                 exit();
             });
             include_once $this->find($resource, $type);

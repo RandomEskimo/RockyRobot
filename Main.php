@@ -37,6 +37,15 @@ set_error_handler(function()
 include_once $locator->find("Settings");
 restore_error_handler();
 
+set_error_handler(function()
+{
+    global $locator;
+    echo "Unable to find ErrorController please make it at: " . $locator->find("ErrorController");
+    exit();
+});
+include_once $locator->find("ErrorController");
+restore_error_handler();
+
 session_start();
 
 $auth = new Authenticator();

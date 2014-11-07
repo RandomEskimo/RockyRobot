@@ -49,9 +49,10 @@
                 $cont = eval(" return new " . $this->controller . "();");
 
                 //make sure it has the function
-                if(!method_exists($cont, $this->function))
+                $check = new ReflectionMethod($this->controller, $this->function);
+                if(!method_exists($cont, $this->function) || !$check->isPublic() || $check->isStatic())
                 {
-                    $error = "Controller: \"" . $this->controller . "\" has no function: " . $this->function . "()";
+                    $error = "Controller: \"" . $this->controller . "\" has no public function: " . $this->function . "()";
                     Renderer::renderError($error);
                     exit();
                 }

@@ -33,7 +33,7 @@
                     return $_SERVER['DOCUMENT_ROOT'] . "/Controllers/" . $resource . ".php";
                 }
                 //Page
-                if(preg_match("/.*Page$/", $resource))
+                if(preg_match("/.*Pages?$/", $resource))
                 {
                     if(in_array($resource, $this->corePages))
                         return $_SERVER['DOCUMENT_ROOT'] . "/core/Pages/" . $resource . ".php";
@@ -46,7 +46,7 @@
                 if(preg_match("/.*Authenticator$/", $resource))
                 {
                     if($resource == "AbstractAuthenticator")
-                        return $_SERVER['DOCUMENT_ROOT'] . "/core/ClassHandling/AbstractAuthenticator.php";
+                        return $_SERVER['DOCUMENT_ROOT'] . "/core/Other/AbstractAuthenticator.php";
                     return $_SERVER['DOCUMENT_ROOT'] . "/RequiredComponents/" . $resource . ".php";
                 }
                 //Templates
@@ -66,7 +66,7 @@
             }
             //others
             if($type == "other")
-                return $_SERVER['DOCUMENT_ROOT'] . "/core/Other/" . $resource . ".php";
+                return $_SERVER['DOCUMENT_ROOT'] . "/Other/" . $resource . ".php";
         }
         
         public function inc($resource, $type = null)

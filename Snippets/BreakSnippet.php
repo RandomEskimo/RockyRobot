@@ -3,7 +3,7 @@
     {
         public function genContent()
         {
-            echo '<br />\n';
+            echo "<br />\n";
         }
     }
 ?>

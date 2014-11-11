@@ -66,7 +66,11 @@
             }
             //others
             if($type == "other")
+            {
+                if($resource == "GlobalFunctions")
+                    return $_SERVER['DOCUMENT_ROOT'] . "/core/Other/" . $resource . ".php";
                 return $_SERVER['DOCUMENT_ROOT'] . "/Other/" . $resource . ".php";
+            }
         }
         
         public function inc($resource, $type = null)

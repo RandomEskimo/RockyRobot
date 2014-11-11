@@ -3,7 +3,7 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . "/core/ClassHandling/ResourceLocator.php";
 $locator = new ResourceLocator();
 include_once $_SERVER['DOCUMENT_ROOT'] . "/core/Render/Renderer.php";
-//$locator->inc("GlobalFunctions", "other");
+$locator->inc("GlobalFunctions", "other");
 $locator->inc("AbstractController");
 $locator->inc("AbstractAuthenticator");
 $locator->inc("Page");

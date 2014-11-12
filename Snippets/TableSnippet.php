@@ -32,11 +32,18 @@
         public function genAll()
         {
             echo "<table>\n";
+            $odd = true;
             foreach($this->snippets as $row)
             {
                 if(empty($row))
                     continue;
-                echo "    <tr>\n";
+                echo "    <tr ";
+                if($odd)
+                    echo "class=\"odd\"";
+                else
+                    echo "class=\"even\"";
+                $odd = !$odd;
+                echo " >\n";
                 foreach($row as $item)
                 {
                     if($item == null)

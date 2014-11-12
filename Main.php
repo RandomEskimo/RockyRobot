@@ -15,7 +15,7 @@ $locator->inc("RequestHandler");
 $file; //global for error reporting of included files
 
 //this is the current version
-define('__VERSION__', '0.1alpha');
+define('__VERSION__', '0.1alpha (Brad)');
 
 //nclude user things
 //set an error handler for finding user defined classes
@@ -97,6 +97,11 @@ if($result != null || is_array($result))
         {
             $new_url = $result['url'];
         }
+        if(isset($result['referer']) && $result['referer'] == true && 
+            isset($_SESSION['referer']) && $_SESSION['referer'] != '')
+        {
+            $new_url = $_SESSION['referer'];
+        }
         else
         {
             if($is_https)
@@ -138,6 +143,10 @@ if($result != null || is_array($result))
     }
     $ren = new Renderer();
     $ren->gen($result);
+    if(isset($_SERVER['HTTP_REFERER']))
+        $_SESSION['referer'] = $_SERVER['HTTP_REFERER'];
+    else
+        $_SESSION['referer'] = '';
 }
 
 ?>

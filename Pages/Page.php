@@ -2,15 +2,19 @@
 
     $locator->inc("Snippet");
     $locator->inc("FlashSnippet");
+    $locator->inc("ScriptsSnippet");
     
     class Page
     {
         private $title;
         private $snippets = array();
+        private $ad_snippets = array(); //access denied snippets
         private $access_level;
         private $force_ssl;
         private $components = array();
         private $template = "defaultTemplate";
+        private $scripts = array();
+        private $style = "style";
         public $Auth;
         
         public function __construct($title)
@@ -36,9 +40,19 @@
             $this->snippets[] = $snippet;
         }
         
+        public function addAccessDeniedSnippet(Snippet $snippet)
+        {
+            $this->ad_snippets[] = $snippet;
+        }
+        
         public function setAccessLevel($level)
         {
             $this->access_level = $level;
+        }
+        
+        public function getAccessLevel()
+        {
+            return $this->access_level;
         }
         
         public function setForceSSL($force)
@@ -53,15 +67,14 @@
         
         public function genContent()
         {
-            if(!$this->Auth->isLoggedIn() && !$this->Auth->meetsPermission($this->Auth->getUserLevel(), $this->access_level) && $this->access_level != 'everyone')
-            {
-                //include $_SERVER['DOCUMENT_ROOT'] . '/templates/access_denied.php';
-                return;
-            }   
-            for($i = 0;$i < count($this->snippets);++$i)
-            {
-                $this->snippets[$i]->genContent();
-            }
+            foreach($this->snippets as $snippet)
+                $snippet->genContent();
+        }
+        
+        public function genAccessDenied()
+        {
+            foreach($this->ad_snippets as $snippet)
+                $snippet->genContent();
         }
         
         public function getTitle()
@@ -76,7 +89,9 @@
         
         public function getComponents()
         {
-            return $this->components;
+            $out = $this->components;
+            $out['scripts'] = new ScriptsSnippet($this->scripts);
+            return $out;
         }
         
         public function getTemplate()
@@ -92,6 +107,11 @@
         public function setFlashMessage($message)
         {
             $this->components['flash'] = new FLashSnippet($message);
+        }
+        
+        public function addScript($script)
+        {
+            $this->scripts[] = $script;
         }
     }
 ?>

@@ -1,4 +1,4 @@
-<?
+<?php
 
     $locator->inc("Snippet");
     $locator->inc("FlashSnippet");

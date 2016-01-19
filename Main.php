@@ -11,6 +11,7 @@ $locator->inc("Snippet");
 $locator->inc("DebugSnippet");
 $locator->inc("TextSnippet");
 $locator->inc("RequestHandler");
+$locator->inc("Logger", "other");
 
 $file; //global for error reporting of included files
 
@@ -45,6 +46,13 @@ set_error_handler(function()
 });
 include_once $locator->find("ErrorController");
 restore_error_handler();
+
+//check if the Logging folder exists
+if(!file_exists($_SERVER['DOCUMENT_ROOT'] . "/Logging"))
+{
+    echo "Unable to find Logging directory, please create it at: " . $_SERVER['DOCUMENT_ROOT'] . "/Logging";
+    exit();
+}
 
 session_start();
 

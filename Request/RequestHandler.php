@@ -40,6 +40,7 @@
                     $error = "Unable to find controller: \"" . $file . "\"<br/>" .
                         "[" . $errno . "]: " . $errstr . ". in: " . $errfile . "[" . $errline . "]<br/>";
                     Renderer::renderError($error);
+                    Logger::CreateLog();
                     exit();
                 });
                 include_once $locator->find($file);
@@ -54,6 +55,7 @@
                 {
                     $error = "Controller: \"" . $this->controller . "\" has no public function: " . $this->function . "()";
                     Renderer::renderError($error);
+                    Logger::CreateLog();
                     exit();
                 }
                 
@@ -65,6 +67,7 @@
                     $error = "Error when calling function<br/>" .
                         "[" . $errno . "]: " . $errstr . ". in: " . $errfile . "[" . $errline . "]<br/>";
                     Renderer::renderError($error);
+                    Logger::CreateLog();
                     exit();
                 });
                 $result = eval('return $cont->' . $this->function . '($this->args);');
@@ -75,6 +78,7 @@
             else
             {
                 Renderer::renderError("Controller or function incorrectly named");
+                Logger::CreateLog();
                 exit();
             }
         }

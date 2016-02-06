@@ -63,14 +63,16 @@
                 //request handler
                 if($resource == 'RequestHandler')
                     return $_SERVER['DOCUMENT_ROOT'] . "/core/Request/" . $resource . ".php";
+                if($resource == "Logger")
+                {
+                    return $_SERVER['DOCUMENT_ROOT'] . "/core/Other/Logger.php";
+                }
             }
             //others
             if($type == "other")
             {
                 if($resource == "GlobalFunctions")
                     return $_SERVER['DOCUMENT_ROOT'] . "/core/Other/GlobalFunctions.php";
-                if($resource == "Logger")
-                    return $_SERVER['DOCUMENT_ROOT'] . "/core/Other/Logger.php"
                 return $_SERVER['DOCUMENT_ROOT'] . "/Other/" . $resource . ".php";
             }
         }

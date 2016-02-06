@@ -25,7 +25,7 @@ class Logger
             {
                 $text .= $line . "\n";
             }
-            $file_name = $_SERVER['DOCUMENT_ROOT'] . "/Logging/" . date('m/d/Y-h:i:s a', time()) . "-" . $_SERVER['REMOTE_ADDR'] . ".log";
+            $file_name = $_SERVER['DOCUMENT_ROOT'] . "/Logging/" . date('Y-m-d_H:i:s') . "-" . $_SERVER['REMOTE_ADDR'] . ".log";
             file_put_contents($file_name, $text);
         }
     }

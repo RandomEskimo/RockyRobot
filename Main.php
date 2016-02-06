@@ -11,7 +11,7 @@ $locator->inc("Snippet");
 $locator->inc("DebugSnippet");
 $locator->inc("TextSnippet");
 $locator->inc("RequestHandler");
-$locator->inc("Logger", "other");
+$locator->inc("Logger");
 
 $file; //global for error reporting of included files
 
@@ -50,7 +50,7 @@ restore_error_handler();
 //check if the Logging folder exists
 if(!file_exists($_SERVER['DOCUMENT_ROOT'] . "/Logging"))
 {
-    echo "Unable to find Logging directory, please create it at: " . $_SERVER['DOCUMENT_ROOT'] . "/Logging";
+    echo "Unable to find Logging directory, please create it at: " . $_SERVER['DOCUMENT_ROOT'] . "/Logging with permissions set to: 0777";
     exit();
 }
 
@@ -88,6 +88,9 @@ if(DEBUG)
     DebugSnippet::addInfo('POST', $_POST);
     DebugSnippet::addInfo('SESSION', $_SESSION);
 }
+
+//write the log
+Logger::CreateLog();
 
 //if result is a page, pass it to the page renderer
 if($result != null || is_array($result))
